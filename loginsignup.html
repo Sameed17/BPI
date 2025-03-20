@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bright Pakistan Initiative - Login, Signup &amp; Forgot Password</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    a { text-decoration: none; }
+    
+    /* Header Styles */
+    header {
+      width: 100%;
+      background-color: #005a9c;
+      padding: 15px 0;
+      text-align: center;
+      color: white;
+    }
+    header a {
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    
+    /* Main Container: centers the card in remaining space */
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+    
+    /* Outer Card Container */
+    .card-container {
+      perspective: 1000px;
+    }
+    .card {
+      width: 400px;
+      height: 550px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+    }
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+    .card-side {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      backface-visibility: hidden;
+      overflow: hidden;
+      padding: 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card-back {
+      transform: rotateY(180deg);
+    }
+    
+    /* Nested Card for Login / Forgot Password */
+    .nested-card {
+      position: relative;
+      width: 100%;
+      height: 380px; /* Fixed height for the nested area */
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+    }
+    .nested-card.flipped {
+      transform: rotateX(180deg);
+    }
+    .nested-side {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      box-sizing: border-box;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .nested-back {
+      transform: rotateX(180deg);
+    }
+    
+    /* Form Styles */
+    h2 {
+      color: #005a9c;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    /* For Sign Up panel, reduce margin for a tighter layout */
+    .card-back .form-group {
+      margin-bottom: 10px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    .btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #005a9c;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 10px;
+    }
+    .btn:hover {
+      background-color: #004070;
+    }
+    .toggle-link {
+      color: #005a9c;
+      cursor: pointer;
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+    /* Outer Toggle links (always visible) */
+    .outer-toggle {
+      text-align: center;
+      font-size: 16px;
+      color: #005a9c;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <a href="index.html">Bright Pakistan Initiative</a>
+  </header>
+  
+  <!-- Main area that centers the card -->
+  <main>
+    <div class="card-container">
+      <div class="card" id="outerCard">
+        <!-- Front Side: Login with nested Login/Forgot Password --> 
+        <div class="card-side card-front">
+          <!-- Nested Card for Login / Forgot Password --> 
+          <div class="nested-card" id="nestedCard">
+            <!-- Nested Front: Login Form --> 
+            <div class="nested-side">
+              <h2>Login</h2>
+              <div class="form-group">
+                <input type="email" placeholder="Email" required>
+              </div>
+              <div class="form-group">
+                <input type="password" placeholder="Password" required>
+              </div>
+              <button class="btn">Login</button>
+              <div class="toggle-link" onclick="toggleNested()">Forgot your password?</div>
+            </div>
+            <!-- Nested Back: Forgot Password Form --> 
+            <div class="nested-side nested-back">
+              <h2>Forgot Password</h2>
+              <div class="form-group">
+                <input type="email" placeholder="Enter your email" required>
+              </div>
+              <button class="btn">Reset Password</button>
+              <div class="toggle-link" onclick="toggleNested()">Back to Login</div>
+            </div>
+          </div>
+          <!-- Outer Toggle to switch to Sign Up (visible on front side) --> 
+          <div class="outer-toggle" onclick="toggleOuter()">Don't have an account? Sign Up</div>
+        </div>
+        <!-- Back Side: Signup Form --> 
+        <div class="card-side card-back">
+          <h2>Sign Up</h2>
+          <div class="form-group">
+            <input type="text" placeholder="Full Name" required>
+          </div>
+          <div class="form-group">
+            <input type="tel" placeholder="Phone Number" required>
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+            <input type="password" placeholder="Password" required>
+          </div>
+          
+          <button class="btn">Register</button>
+          <!-- Outer Toggle to switch back to Login --> 
+          <div class="outer-toggle" onclick="toggleOuter()">Already have an account? Login</div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <script>
+    function toggleOuter() {
+      document.getElementById('outerCard').classList.toggle('flipped');
+      // Reset nested card to show Login when switching back to Login side
+      document.getElementById('nestedCard').classList.remove('flipped');
+    }
+    function toggleNested() {
+      document.getElementById('nestedCard').classList.toggle('flipped');
+    }
+  </script>
+</body>
+</html>
