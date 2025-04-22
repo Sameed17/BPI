@@ -1,229 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bright Pakistan Initiative - Login, Signup &amp; Forgot Password</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Bright Pakistan Initiative – Login / Sign Up</title>
+  <!-- Bootstrap & FontAwesome -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" />
+  <link href="css/styles.css" rel="stylesheet" />
   <style>
-    /* Global Styles */
-    body {
+    /* Theme Colors */
+    :root {
+      --bs-primary: #008080;    /* Deep teal */
+      --bs-secondary: #F5F5DC;  /* Light beige */
+      --bs-success: #90EE90;    /* Bright green */
+    }
+    html, body {
+      height: 100%; margin: 0;
       font-family: 'Poppins', sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
+      background-color: var(--bs-secondary);
     }
-    a { text-decoration: none; }
-    
-    /* Header Styles */
-    header {
-      width: 100%;
-      background-color: #005a9c;
-      padding: 15px 0;
-      text-align: center;
-      color: white;
-    }
-    header a {
-      color: white;
-      font-size: 24px;
-      font-weight: 700;
-    }
-    
-    /* Main Container: centers the card in remaining space */
-    main {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-    }
-    
-    /* Outer Card Container */
-    .card-container {
-      perspective: 1000px;
-    }
-    .card {
-      width: 400px;
-      height: 550px;
+    body { display: flex; flex-direction: column; }
+    .masthead {
       position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.8s;
+      width: 100%; height: 100%;
+      background: url('assets/img/header-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
     }
-    .card.flipped {
-      transform: rotateY(180deg);
+    .masthead .card-container {
+      display: flex; height: 100%; align-items: center; justify-content: center;
     }
-    .card-side {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    .card-custom { width: 400px; perspective: 1000px; }
+    .flip-card {
+      position: relative; width: 100%; height: 100%;
+      transform-style: preserve-3d; transition: transform 0.8s;
+    }
+    .flipped { transform: rotateY(180deg); }
+    .flip-side {
       backface-visibility: hidden;
-      overflow: hidden;
-      padding: 20px;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     }
-    .card-back {
-      transform: rotateY(180deg);
-    }
-    
-    /* Nested Card for Login / Forgot Password */
+    .flip-back { transform: rotateY(180deg); }
     .nested-card {
-      position: relative;
-      width: 100%;
-      height: 380px; /* Fixed height for the nested area */
-      transform-style: preserve-3d;
-      transition: transform 0.8s;
+      position: relative; width: 100%; height: 100%;
+      transform-style: preserve-3d; transition: transform 0.8s;
     }
-    .nested-card.flipped {
-      transform: rotateX(180deg);
-    }
+    .nested-card.flipped { transform: rotateX(180deg); }
     .nested-side {
-      position: absolute;
-      width: 100%;
-      height: 100%;
       backface-visibility: hidden;
-      box-sizing: border-box;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      position: absolute; top: 0; bottom: 0; left: 0; right: 0;
+      margin: auto; width: 90%; max-width: 320px; padding: 1rem;
+      background-color: var(--bs-secondary);
+      border-radius: 0.25rem; box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+      display: flex; flex-direction: column; justify-content: center;
     }
-    .nested-back {
-      transform: rotateX(180deg);
-    }
-    
-    /* Form Styles */
-    h2 {
-      color: #005a9c;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    /* For Sign Up panel, reduce margin for a tighter layout */
-    .card-back .form-group {
-      margin-bottom: 10px;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-    .btn {
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      background-color: #005a9c;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.3s;
-      margin-top: 10px;
-    }
-    .btn:hover {
-      background-color: #004070;
-    }
-    .toggle-link {
-      color: #005a9c;
-      cursor: pointer;
-      margin-top: 15px;
-      text-align: center;
-      font-size: 14px;
-    }
-    /* Outer Toggle links (always visible) */
-    .outer-toggle {
-      text-align: center;
-      font-size: 16px;
-      color: #005a9c;
-      cursor: pointer;
-    }
+    .nested-back { transform: rotateX(180deg); }
   </style>
 </head>
-<body>
-  <!-- Header -->
-  <header>
-    <a href="index.html">Bright Pakistan Initiative</a>
-  </header>
-  
-  <!-- Main area that centers the card -->
-  <main>
-    <div class="card-container">
-      <div class="card" id="outerCard">
-        <!-- Front Side: Login with nested Login/Forgot Password --> 
-        <div class="card-side card-front">
-          <!-- Nested Card for Login / Forgot Password --> 
-          <div class="nested-card" id="nestedCard">
-            <!-- Nested Front: Login Form --> 
-            <div class="nested-side">
-              <h2>Login</h2>
-              <div class="form-group">
-                <input type="email" placeholder="Email" required>
+<body id="page-top">
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="index.html">Bright Pakistan</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.html#about">About</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.html#how">How It Works</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.html#scholarships">Scholarships</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.html#testimonials">Testimonials</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Fullscreen Masthead with Background Image -->
+  <header class="masthead">
+    <div class="container card-container">
+      <div class="card card-custom shadow-lg" style="height: 500px;">
+        <div class="card-body p-0">
+          <div class="flip-card" id="outerCard">
+            <!-- Front: Login & Forgot -->
+            <div class="flip-side">
+              <div class="nested-card" id="nestedCard">
+                <div class="nested-side">
+                  <h4 class="text-center text-primary mb-3">Login</h4>
+                  <form id="loginForm">
+                    <div class="mb-3"><input type="email" id="loginEmail" class="form-control" placeholder="Email" required></div>
+                    <div class="mb-3"><input type="password" id="loginPass" class="form-control" placeholder="Password" required></div>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                  </form>
+                  <div class="text-center mt-3"><a href="#" onclick="toggleNested()" style="color: var(--bs-primary);">Forgot your password?</a></div>
+                  <div class="text-center mt-2 text-dark">Don't have an account? <a href="#" onclick="toggleOuter()" style="color: var(--bs-primary);">Sign Up</a></div>
+                </div>
+                <div class="nested-side nested-back">
+                  <h4 class="text-center text-primary mb-3">Reset Password</h4>
+                  <form id="resetForm">
+                    <div class="mb-3"><input type="email" id="resetEmail" class="form-control" placeholder="Email" required></div>
+                    <button type="submit" class="btn btn-primary w-100">Send Reset Link</button>
+                  </form>
+                  <div class="text-center mt-3"><a href="#" onclick="toggleNested()" style="color: var(--bs-primary);">Back to Login</a></div>
+                </div>
               </div>
-              <div class="form-group">
-                <input type="password" placeholder="Password" required>
-              </div>
-              <button class="btn">Login</button>
-              <div class="toggle-link" onclick="toggleNested()">Forgot your password?</div>
             </div>
-            <!-- Nested Back: Forgot Password Form --> 
-            <div class="nested-side nested-back">
-              <h2>Forgot Password</h2>
-              <div class="form-group">
-                <input type="email" placeholder="Enter your email" required>
+            <!-- Back: Sign Up -->
+            <div class="flip-side flip-back">
+              <div class="nested-side">
+                <h4 class="text-center text-primary mb-3">Sign Up</h4>
+                <form id="signupForm">
+                  <div class="mb-3"><input type="text" id="fullName" class="form-control" placeholder="Full Name" required></div>
+                  <div class="mb-3"><input type="email" id="signupEmail" class="form-control" placeholder="Email" required></div>
+                  <div class="mb-3">
+                    <input type="password" id="signupPass" class="form-control" placeholder="Password" required>
+                    <ul id="passwordRules" class="small mt-2 text-start ps-3" style="color: #dc3545;">
+                      <li id="rule-length">❌ At least 8 characters</li>
+                      <li id="rule-lower">❌ One lowercase letter</li>
+                      <li id="rule-upper">❌ One uppercase letter</li>
+                      <li id="rule-number">❌ One number</li>
+                      <li id="rule-special">❌ One special character (@$!%*?&)</li>
+                    </ul>
+                  </div>
+                  
+                  <button type="submit" class="btn btn-primary w-100">Register</button>
+                </form>
+                <div class="text-center mt-3 text-dark">Already have an account? <a href="#" onclick="toggleOuter()" style="color: var(--bs-primary);">Login</a></div>
               </div>
-              <button class="btn">Reset Password</button>
-              <div class="toggle-link" onclick="toggleNested()">Back to Login</div>
             </div>
           </div>
-          <!-- Outer Toggle to switch to Sign Up (visible on front side) --> 
-          <div class="outer-toggle" onclick="toggleOuter()">Don't have an account? Sign Up</div>
-        </div>
-        <!-- Back Side: Signup Form --> 
-        <div class="card-side card-back">
-          <h2>Sign Up</h2>
-          <div class="form-group">
-            <input type="text" placeholder="Full Name" required>
-          </div>
-          <div class="form-group">
-            <input type="tel" placeholder="Phone Number" required>
-          </div>
-          <div class="form-group">
-            <input type="email" placeholder="Email" required>
-          </div>
-          <div class="form-group">
-            <input type="password" placeholder="Password" required>
-          </div>
-          
-          <button class="btn">Register</button>
-          <!-- Outer Toggle to switch back to Login --> 
-          <div class="outer-toggle" onclick="toggleOuter()">Already have an account? Login</div>
         </div>
       </div>
     </div>
-  </main>
-  
+  </header>
+
+  <!-- Footer -->
+  <footer class="mt-auto py-3" style="background-color: var(--bs-primary); color: var(--bs-secondary); text-align: center;">
+    <small>&copy; 2025 Bright Pakistan Initiative. All rights reserved.</small>
+  </footer>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script>
     function toggleOuter() {
       document.getElementById('outerCard').classList.toggle('flipped');
-      // Reset nested card to show Login when switching back to Login side
       document.getElementById('nestedCard').classList.remove('flipped');
     }
     function toggleNested() {
       document.getElementById('nestedCard').classList.toggle('flipped');
     }
+
+    const passwordInput = document.getElementById('signupPass');
+    const rules = {
+    length: document.getElementById('rule-length'),
+    lower: document.getElementById('rule-lower'),
+    upper: document.getElementById('rule-upper'),
+    number: document.getElementById('rule-number'),
+    special: document.getElementById('rule-special'),
+    };
+
+    passwordInput.addEventListener('input', () => {
+    const val = passwordInput.value;
+
+    // Check each rule
+    rules.length.textContent = (val.length >= 8 ? '✅' : '❌') + ' At least 8 characters';
+    rules.lower.textContent = (/[a-z]/.test(val) ? '✅' : '❌') + ' One lowercase letter';
+    rules.upper.textContent = (/[A-Z]/.test(val) ? '✅' : '❌') + ' One uppercase letter';
+    rules.number.textContent = (/[0-9]/.test(val) ? '✅' : '❌') + ' One number';
+    rules.special.textContent = (/[@$!%*?&]/.test(val) ? '✅' : '❌') + ' One special character (@$!%*?&)';
+    });
+
+    // Form handlers
+    document.getElementById('loginForm').onsubmit = e => { e.preventDefault(); window.location='payment.html'; };
+    document.getElementById('resetForm').onsubmit = e => { e.preventDefault(); alert('Reset link sent!'); toggleNested(); };
+    document.getElementById('signupForm').onsubmit = e => {
+        e.preventDefault();
+        const val = passwordInput.value;
+        const isValid = val.length >= 8 &&
+                        /[a-z]/.test(val) &&
+                        /[A-Z]/.test(val) &&
+                        /[0-9]/.test(val) &&
+                        /[@$!%*?&]/.test(val);
+      
+        if (!isValid) {
+          alert("Please meet all password requirements.");
+          return;
+        }
+      
+        alert('Registered!');
+        toggleOuter();
+      };
+      
   </script>
 </body>
 </html>
